@@ -56,7 +56,7 @@ public class ControlView extends View {
     private final float COS_CONST = 0.7071067811865476f;
 
     // 时间间隔限制，避免回调过于频繁
-    private final long period = 300;
+    private final long period = 100;
 
     private long lastTime = 0;
 
@@ -127,10 +127,10 @@ public class ControlView extends View {
         // 绘制灰色分割线
         drawAnchor(canvas, ox, oy,  d, mPaint);
 
-        // 绘制可拖动的蓝色小圆
+        // 绘制中间可拖动小圆圈
         mPaint.setStyle(Paint.Style.FILL);
         mPaint.setColor(Color.GRAY);
-        // 使用 mBlueCirclePosition 作为蓝色小圆的圆心
+
         canvas.drawCircle(mBlueCirclePosition.x, mBlueCirclePosition.y, circleRadius, mPaint);
     }
 
@@ -141,14 +141,12 @@ public class ControlView extends View {
         float d = Math.min(getWidth(), getHeight()) / 2.0f - (float) getWidth() / CIRCLE_RATE;
         float blueCircleRadius = (float) getWidth() / CIRCLE_RATE;
 
-        // 【新增】确保控件尺寸确定后，蓝色圆默认在中心点
         if (mBlueCirclePosition.x == 0 && mBlueCirclePosition.y == 0) {
             mBlueCirclePosition.set(ox, oy);
         }
 
         switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-                // 获取手指按下的位置
                 float touchX = event.getX();
                 float touchY = event.getY();
 
