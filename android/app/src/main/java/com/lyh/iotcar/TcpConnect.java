@@ -25,7 +25,6 @@ public class TcpConnect {
     }
 
     public interface OnTcpTxRxListener {
-        void onMsgSend(boolean success, String msg);
         void onMsgReceive(String msg);
         void onError(String msg);
     }
@@ -72,9 +71,6 @@ public class TcpConnect {
 
                 // 发送数据
                 writer.println(command);
-                if (listener != null) {
-                    listener.onMsgSend(true, command);
-                }
 
                 try {
                     byte[] buffer = new byte[1024];

@@ -47,6 +47,46 @@ class MainActivity : Activity() {
             logText.text = ""
         }
 
+        val turnLeftText = findViewById<Button>(R.id.btn_turn_left)
+        turnLeftText.setOnClickListener {
+            tcpConnect.sendCmd(8, 80, object : TcpConnect.OnTcpTxRxListener{
+
+                override fun onMsgReceive(msg: String?) {
+                    runOnUiThread(Runnable {
+                        addLog("Info: 接受到消息 => $msg \n", Color.GREEN)
+                    })
+
+                }
+
+                override fun onError(msg: String?) {
+                    runOnUiThread(Runnable {
+                        addLog("Error: 收发消息异常 => $msg \n", Color.RED)
+                    })
+
+                }
+            })
+        }
+
+        val turnRightText = findViewById<Button>(R.id.btn_turn_right)
+        turnRightText.setOnClickListener {
+            tcpConnect.sendCmd(9, 80, object : TcpConnect.OnTcpTxRxListener{
+
+                override fun onMsgReceive(msg: String?) {
+                    runOnUiThread(Runnable {
+                        addLog("Info: 接受到消息 => $msg \n", Color.GREEN)
+                    })
+
+                }
+
+                override fun onError(msg: String?) {
+                    runOnUiThread(Runnable {
+                        addLog("Error: 收发消息异常 => $msg \n", Color.RED)
+                    })
+
+                }
+            })
+        }
+
 
         tcpConnect = TcpConnect();
 
@@ -65,10 +105,27 @@ class MainActivity : Activity() {
 
         val controlView = findViewById<ControlView>(R.id.controlView)
         controlView.setOnTriggerListener { i, f, bool ->
-            tcpConnect.sendCmd(i, (f * 100).toInt(), object : TcpConnect.OnTcpTxRxListener{
-                override fun onMsgSend(success: Boolean, msg: String?) {
 
-                }
+            if(bool){
+                tcpConnect.sendCmd(10, 0, object : TcpConnect.OnTcpTxRxListener{
+
+                    override fun onMsgReceive(msg: String?) {
+                        runOnUiThread(Runnable {
+                            addLog("Info: 接受到消息 => $msg \n", Color.GREEN)
+                        })
+                    }
+
+                    override fun onError(msg: String?) {
+                        runOnUiThread(Runnable {
+                            addLog("Error: 收发消息异常 => $msg \n", Color.RED)
+                        })
+
+                    }
+                })
+                return@setOnTriggerListener
+            }
+
+            tcpConnect.sendCmd(i, (f * 100).toInt(), object : TcpConnect.OnTcpTxRxListener{
 
                 override fun onMsgReceive(msg: String?) {
                     runOnUiThread(Runnable {
